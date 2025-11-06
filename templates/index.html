@@ -31,19 +31,19 @@
         <div class="questions">
             <div class="question-box">
                 <p>Ваши близкие страдают от алкогольной либо наркотической зависимости?</p>
-                <button>ДА</button>
+                <button data-modal-title="Зависимость" data-modal-message="Мы готовы помочь: консультация специалиста и программа поддержки.">ДА</button>
             </div>
             <div class="question-box">
                 <p>Вы или ваши близкие переживаете стресс из-за обстановки в стране?</p>
-                <button>ДА</button>
+                <button data-modal-title="Стресс" data-modal-message="Поддержим вас: техники стабилизации и план действий.">ДА</button>
             </div>
             <div class="question-box">
                 <p>Вы или ваши близкие столкнулись с местами принудительного содержания?</p>
-                <button>ДА</button>
+                <button data-modal-title="Принудительное содержание" data-modal-message="Разберёмся с юридическими и психологическими аспектами, дадим рекомендации.">ДА</button>
             </div>
             <div class="question-box">
                 <p>Вам нужна помощь или психологическая поддержка из-за стресса в семье?</p>
-                <button>ДА</button>
+                <button data-modal-title="Семья и поддержка" data-modal-message="Доступна семейная консультация и пошаговый план улучшения коммуникации.">ДА</button>
             </div>
         </div>
     </section>
@@ -88,7 +88,7 @@
     </section>
 
     <!-- ================= Форма заявки ================= -->
-    <section class="section contact-form-section" data-theme="yellow">
+    <section id="contact-form" class="section contact-form-section" data-theme="yellow">
         <div class="form-container">
             <h2>Оставить заявку</h2>
             <form>
@@ -108,6 +108,19 @@
             <div class="home-icon">🏠</div>
         </div>
     </footer>
+    <!-- Модальное окно для вопросов (универсальное) -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h4 id="info-modal-title">Важно</h4>
+            <p id="info-modal-text">Текст модального окна</p>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <button id="info-modal-contact">Оставить заявку</button>
+                <a id="info-modal-call" href="tel:8-4832-34-57-71" class="cta-button" style="text-decoration:none; display:inline-block;">Позвонить</a>
+                <button id="info-modal-ok">Закрыть</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ================= Модальное окно для ввода пароля (скрыто) ================= -->
     <!-- 4. Эта структура изначально не видна и будет показана с помощью JavaScript -->

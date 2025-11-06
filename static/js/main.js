@@ -89,9 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return current.getAttribute('data-theme') || 'white';
     }
 
-    let lastY = window.scrollY;
-    let hidden = false;
-
     const onScroll = () => {
         // прозрачность при движении
         if (window.scrollY > 0) {
@@ -103,15 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const sectionTheme = getThemeByBoundary();
         const headerTheme = sectionTheme === 'yellow' ? 'white' : 'yellow';
         setHeaderTheme(headerTheme);
-
-        // скрытие/появление шапки по направлению скролла
-        const dy = window.scrollY - lastY;
-        lastY = window.scrollY;
-        if (window.scrollY < 150 || dy < -6) {
-            if (hidden) { headerEl.classList.remove('hidden'); hidden = false; }
-        } else if (dy > 6) {
-            if (!hidden) { headerEl.classList.add('hidden'); hidden = true; }
-        }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
@@ -121,6 +109,49 @@ document.addEventListener('DOMContentLoaded', function() {
     // больше не используем IntersectionObserver — переключение строго по границе
 
     // --- ЗАГРУЗКА ДИНАМИЧЕСКОГО КОНТЕНТА С СЕРВЕРА ---
+
+    // --- Модальное окно для вопросов (секция КОГДА) ---
+    (function initQuestionModals() {
+        const infoModal = document.getElementById('info-modal');
+        const infoTitle = document.getElementById('info-modal-title');
+        const infoText = document.getElementById('info-modal-text');
+        const infoClose = infoModal ? infoModal.querySelector('.close-button') : null;
+        const infoOk = document.getElementById('info-modal-ok');
+        const infoContact = document.getElementById('info-modal-contact');
+        const infoCall = document.getElementById('info-modal-call');
+        const contactSection = document.getElementById('contact-form');
+
+        const openInfo = (title, text) => {
+            if (!infoModal) return;
+            if (infoTitle) infoTitle.textContent = title || 'Важно';
+            if (infoText) infoText.textContent = text || '';
+            infoModal.style.display = 'block';
+        };
+        const closeInfo = () => { if (infoModal) infoModal.style.display = 'none'; };
+
+        if (infoClose) infoClose.onclick = closeInfo;
+        if (infoOk) infoOk.onclick = closeInfo;
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeInfo(); });
+        window.addEventListener('click', (e) => { if (e.target === infoModal) closeInfo(); });
+
+        if (infoContact) {
+            infoContact.addEventListener('click', () => {
+                closeInfo();
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        // на кнопках в вопросах читаем атрибуты
+        document.querySelectorAll('.questions-section .question-box button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const title = btn.getAttribute('data-modal-title') || 'Важно';
+                const message = btn.getAttribute('data-modal-message') || 'Мы свяжемся с вами и подберём решение.';
+                openInfo(title, message);
+            });
+        });
+    })();
 
     // --- Загрузка Вебинаров ---
     fetch('/api/webinars') // Отправляем GET-запрос на наш API-эндпоинт
@@ -183,5 +214,4 @@ document.addEventListener('DOMContentLoaded', function() {
                 newsContainer.appendChild(newsElement);
             });
         });
-});
 });

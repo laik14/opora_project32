@@ -33,9 +33,6 @@ body { padding-top: 72px; }
 
 .header.scrolled { padding: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
 
-/* скрытие шапки при прокрутке вниз */
-.header.hidden { transform: translateY(-110%); }
-
 /* темы шапки */
 .header.theme-yellow { background-color: #ffc107; color: #000; }
 .header.theme-white { background-color: #ffffff; color: #000; }
@@ -301,4 +298,42 @@ body { padding-top: 72px; }
     color: red;
     font-size: 0.9em;
     height: 20px;
+}
+
+/* ================= АДАПТИВ ================= */
+@media (max-width: 992px) {
+    body { padding-top: 64px; }
+    .logo { font-size: 2.2em; }
+    .phone-number { font-size: 1.2em; margin-right: 12px; }
+    .cta-button { padding: 8px 14px; }
+    .about-section { gap: 30px; }
+}
+
+@media (max-width: 768px) {
+    body { padding-top: 56px; }
+    .header { padding: 10px; }
+    .header.scrolled { padding: 6px; }
+    .logo { font-size: 1.8em; }
+    .phone-cta { gap: 8px; }
+    .phone-number { font-size: 1em; margin-right: 8px; }
+    .cta-button { font-size: 0.95em; padding: 8px 12px; }
+    .questions { gap: 12px; }
+    .question-box { width: 45%; min-width: 220px; }
+    .about-section { flex-direction: column; }
+    .webinars-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .vk-info { max-width: 100%; }
+    .form-container { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+    body { padding-top: 52px; }
+    .header { padding: 8px; }
+    .logo { font-size: 1.5em; }
+    .phone-cta { gap: 6px; }
+    .phone-number { display: none; }
+    .cta-button { padding: 8px 10px; font-size: 0.9em; }
+    .questions { gap: 10px; }
+    .question-box { width: 100%; min-width: 0; }
+    .webinars-grid { grid-template-columns: 1fr; gap: 14px; }
+    .about-image img { max-width: 100%; }
 }
