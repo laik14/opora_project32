@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОПОРА - Психологическая помощь</title>
+    <!-- 1. Подключение файла со стилями -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- ================= Шапка сайта (Header) ================= -->
+    <header class="header theme-yellow">
+        <div class="logo">ОПОРА</div>
+        <div class="phone-cta">
+            <div class="home-icon">🏠</div>
+            <div class="phone-number">8-4832-34-57-71</div>
+            <button class="cta-button">ПОЗВОНИТЬ</button>
+        </div>
+    </header>
+
+    <!-- ================= Вступительная секция ================= -->
+    <section class="section main-section" data-theme="yellow">
+        <h2>Это помощь людям, попавшим в трудную жизненную ситуацию.</h2>
+        <p>Один звонок может изменить вашу жизнь и жизнь ваших близких.</p>
+    </section>
+
+    <!-- ================= Секция "Когда:" с проблемами ================= -->
+    <section class="section questions-section" data-theme="yellow">
+        <h2>КОГДА:</h2>
+        <div class="questions">
+            <div class="question-box">
+                <p>Ваши близкие страдают от алкогольной либо наркотической зависимости?</p>
+                <button>ДА</button>
+            </div>
+            <div class="question-box">
+                <p>Вы или ваши близкие переживаете стресс из-за обстановки в стране?</p>
+                <button>ДА</button>
+            </div>
+            <div class="question-box">
+                <p>Вы или ваши близкие столкнулись с местами принудительного содержания?</p>
+                <button>ДА</button>
+            </div>
+            <div class="question-box">
+                <p>Вам нужна помощь или психологическая поддержка из-за стресса в семье?</p>
+                <button>ДА</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ================= Секция об эксперте ================= -->
+    <section class="section about-section" data-theme="white">
+        <div class="resources">
+            <div class="resource-item"><img src="https://i.imgur.com/8f5gZpD.png" alt="Презентация"><span>Презентация</span></div>
+            <div class="resource-item"><img src="https://i.imgur.com/uNf4s2j.png" alt="Демо-ролик"><span>Демо-ролик</span></div>
+            <div class="resource-item"><img src="https://i.imgur.com/sC5vL9x.png" alt="Фотосток"><span>Фотосток</span></div>
+        </div>
+        <div class="about-text">
+            <h3>Повалей Анна Александровна – клинический психолог</h3>
+            <p>Практическая деятельность с 2012 года. Автор реабилитационных программ... (полный текст)</p>
+        </div>
+        <div class="about-image">
+            <img src="https://i.imgur.com/6X9m3bS.png" alt="Анна Александровна Повалей">
+        </div>
+    </section>
+
+    <!-- ================= Секция Вебинаров (динамическая) ================= -->
+    <section class="section webinars-section" data-theme="yellow">
+        <h2>ВЕБИНАРЫ</h2>
+        <!-- 2. Этот блок будет заполнен данными с сервера с помощью JavaScript -->
+        <div id="webinars-grid" class="webinars-grid">
+            <p>Загрузка вебинаров...</p>
+        </div>
+        <div class="vk-info">
+            <img src="https://i.imgur.com/S8Zk3kL.png" alt="VK" class="vk-icon">
+            <p>Мы предоставляем доступ к первым трем вебинарам по теме "Созависимость" если ты подпишешься на нашу группу Вконтакте "Проект Опора".</p>
+            <p>Также возможна покупка через личный кабинет.</p>
+        </div>
+    </section>
+
+    <!-- ================= Секция Новостей (динамическая) ================= -->
+    <section id="news-section" class="section news-section" data-theme="white">
+        <h2>НОВОСТИ</h2>
+         <!-- 3. Этот блок также будет заполнен данными с сервера -->
+        <div id="news-container" class="news-container">
+            <p>Загрузка новостей...</p>
+        </div>
+    </section>
+
+    <!-- ================= Форма заявки ================= -->
+    <section class="section contact-form-section" data-theme="yellow">
+        <div class="form-container">
+            <h2>Оставить заявку</h2>
+            <form>
+                <input type="text" placeholder="НАПИШИТЕ ВАШЕ ИМЯ">
+                <input type="tel" placeholder="НАПИШИТЕ ВАШ ТЕЛЕФОН">
+                <p>Если имеются вопросы или вам нужна помощь, просто заполните форму и с вами свяжется сотрудник нашей службы поддержки.</p>
+                <button type="submit">ТЫК</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ================= Подвал сайта (Footer) ================= -->
+    <footer class="footer black">
+        <div class="logo" style="color: #ffc107;">ОПОРА</div>
+        <div class="phone-cta">
+            <div class="phone-number" style="color: #ffc107;">8-4832-34-57-71</div>
+            <div class="home-icon">🏠</div>
+        </div>
+    </footer>
+
+    <!-- ================= Модальное окно для ввода пароля (скрыто) ================= -->
+    <!-- 4. Эта структура изначально не видна и будет показана с помощью JavaScript -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h4>Доступ к вебинару</h4>
+            <p>Пожалуйста, введите пароль для получения доступа.</p>
+            <input type="password" id="password-input" placeholder="Введите пароль">
+            <button id="password-submit-btn">Получить доступ</button>
+            <p id="modal-error" class="modal-error-message"></p>
+        </div>
+    </div>
+
+    <!-- 5. Подключение JavaScript файла в конце страницы -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

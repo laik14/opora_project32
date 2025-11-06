@@ -1,0 +1,187 @@
+// Весь код обернут в этот обработчик, чтобы скрипт начал работать
+// только после полной загрузки HTML-страницы.
+document.addEventListener('DOMContentLoaded', function() {
+
+    // --- ЛОГИКА МОДАЛЬНОГО ОКНА ДЛЯ ПАРОЛЯ ---
+
+    // 1. Получаем ссылки на HTML-элементы, с которыми будем работать
+    const modal = document.getElementById('password-modal');
+    const passwordInput = document.getElementById('password-input');
+    const submitButton = document.getElementById('password-submit-btn');
+    const closeButton = document.querySelector('.modal .close-button');
+    const modalError = document.getElementById('modal-error');
+    let currentWebinarId = null; // Переменная для хранения ID вебинара, который открывают
+
+    // 2. Функция для открытия окна
+    function openPasswordModal(webinarId) {
+        currentWebinarId = webinarId; // Запоминаем ID
+        passwordInput.value = ''; // Очищаем поле ввода
+        modalError.textContent = ''; // Очищаем сообщение об ошибке
+        modal.style.display = 'block'; // Показываем окно
+    }
+
+    // 3. Функция для закрытия окна
+    function closePasswordModal() {
+        modal.style.display = 'none'; // Скрываем окно
+    }
+
+    // 4. Функция для проверки пароля
+    function checkPassword() {
+        const password = passwordInput.value;
+        if (!password) {
+            modalError.textContent = 'Пожалуйста, введите пароль.';
+            return;
+        }
+
+        // Отправляем запрос на сервер (бэкенд)
+        fetch('/api/check_password', {
+            method: 'POST', // Метод POST для отправки данных
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: currentWebinarId, password: password }), // Упаковываем данные в JSON
+        })
+        .then(response => response.json()) // Получаем ответ и парсим его как JSON
+        .then(data => {
+            if (data.success) { // Если бэкенд сказал, что пароль верный
+                window.open(data.video_url, '_blank'); // Открываем ссылку на видео в новой вкладке
+                closePasswordModal();
+            } else { // Если пароль неверный
+                modalError.textContent = data.message || 'Произошла ошибка.';
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            modalError.textContent = 'Не удалось проверить пароль.';
+        });
+    }
+
+    // 5. Назначаем события на клики
+    closeButton.onclick = closePasswordModal;
+    submitButton.onclick = checkPassword;
+    window.onclick = function(event) { // Закрыть окно при клике на темный фон
+        if (event.target == modal) {
+            closePasswordModal();
+        }
+    };
+
+    // --- ПОВЕДЕНИЕ ШАПКИ (тоньше, полупрозрачная на скролле, смена темы) ---
+    const headerEl = document.querySelector('.header');
+    const sections = Array.from(document.querySelectorAll('section.section'));
+    // переключаем тему строго по границе секций: как только верх секции проходит под шапку
+
+    // полупрозрачность при движении
+    function setHeaderTheme(theme) {
+        headerEl.classList.remove('theme-white', 'theme-yellow');
+        headerEl.classList.add(theme === 'yellow' ? 'theme-yellow' : 'theme-white');
+    }
+
+    function getThemeByBoundary() {
+        const headerHeight = headerEl.getBoundingClientRect().height;
+        // берём последнюю секцию, чей верх уже прошёл верх шапки
+        let current = sections[0];
+        for (const sec of sections) {
+            const rect = sec.getBoundingClientRect();
+            if (rect.top <= headerHeight + 0.5) { // +0.5 для устранения дребезга на границе
+                current = sec;
+            } else {
+                break;
+            }
+        }
+        return current.getAttribute('data-theme') || 'white';
+    }
+
+    let lastY = window.scrollY;
+    let hidden = false;
+
+    const onScroll = () => {
+        // прозрачность при движении
+        if (window.scrollY > 0) {
+            headerEl.classList.add('scrolled');
+        } else {
+            headerEl.classList.remove('scrolled');
+        }
+        // инверсия темы относительно секции, чей верх прошёл под шапку
+        const sectionTheme = getThemeByBoundary();
+        const headerTheme = sectionTheme === 'yellow' ? 'white' : 'yellow';
+        setHeaderTheme(headerTheme);
+
+        // скрытие/появление шапки по направлению скролла
+        const dy = window.scrollY - lastY;
+        lastY = window.scrollY;
+        if (window.scrollY < 150 || dy < -6) {
+            if (hidden) { headerEl.classList.remove('hidden'); hidden = false; }
+        } else if (dy > 6) {
+            if (!hidden) { headerEl.classList.add('hidden'); hidden = true; }
+        }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+
+    // смена темы в зависимости от активной секции
+    // больше не используем IntersectionObserver — переключение строго по границе
+
+    // --- ЗАГРУЗКА ДИНАМИЧЕСКОГО КОНТЕНТА С СЕРВЕРА ---
+
+    // --- Загрузка Вебинаров ---
+    fetch('/api/webinars') // Отправляем GET-запрос на наш API-эндпоинт
+        .then(response => response.json())
+        .then(data => {
+            const webinarsContainer = document.getElementById('webinars-grid');
+            webinarsContainer.innerHTML = ''; // Очищаем надпись "Загрузка..."
+            if (data.length === 0) {
+                webinarsContainer.innerHTML = '<p>Вебинаров пока нет.</p>';
+                return;
+            }
+            // Для каждого вебинара из полученного списка...
+            data.forEach(webinar => {
+                const videoId = webinar.video_url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|)([\w-]{11})/)?.[1];
+                const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : 'https://via.placeholder.com/300x170.png?text=No+Preview';
+                
+                const isLocked = webinar.is_locked;
+                const cardClass = 'webinar-card' + (isLocked ? ' locked' : '');
+                
+                // Создаем HTML-код для карточки
+                const cardElement = document.createElement('div');
+                cardElement.className = 'webinar-card-link';
+                cardElement.innerHTML = `
+                    <div class="${cardClass}" title="${webinar.title}">
+                        <img src="${thumbnailUrl}" alt="${webinar.title}">
+                        <div class="play-button"></div>
+                    </div>
+                `;
+
+                // Назначаем разное действие по клику в зависимости от статуса
+                if (isLocked) {
+                    cardElement.onclick = () => openPasswordModal(webinar.id); // Если закрыт - открыть окно с паролем
+                } else {
+                    cardElement.onclick = () => window.open(webinar.video_url, '_blank'); // Если открыт - перейти по ссылке
+                }
+                
+                webinarsContainer.appendChild(cardElement); // Добавляем созданную карточку на страницу
+            });
+        });
+    
+    // --- Загрузка Новостей (аналогично вебинарам) ---
+    fetch('/api/news')
+        .then(response => response.json())
+        .then(data => {
+            const newsContainer = document.getElementById('news-container');
+            newsContainer.innerHTML = '';
+            if (data.length === 0) {
+                newsContainer.innerHTML = '<p>Новостей пока нет.</p>';
+                return;
+            }
+            data.forEach(item => {
+                const date = new Date(item.date).toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+                const newsElement = document.createElement('div');
+                newsElement.className = 'news-item';
+                newsElement.innerHTML = `
+                    <div class="news-date">${date}</div>
+                    <h3>${item.title}</h3>
+                    <p>${item.content}</p>
+                `;
+                newsContainer.appendChild(newsElement);
+            });
+        });
+});
+});
