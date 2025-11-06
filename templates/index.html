@@ -31,19 +31,19 @@
         <div class="questions">
             <div class="question-box">
                 <p>Ваши близкие страдают от алкогольной либо наркотической зависимости?</p>
-                <button data-modal-title="Зависимость" data-modal-message="Мы готовы помочь: консультация специалиста и программа поддержки.">ДА</button>
+                <button data-service="addiction" data-modal-title="Зависимость" data-modal-message="Мы готовы помочь: консультация специалиста и программа поддержки.">ДА</button>
             </div>
             <div class="question-box">
                 <p>Вы или ваши близкие переживаете стресс из-за обстановки в стране?</p>
-                <button data-modal-title="Стресс" data-modal-message="Поддержим вас: техники стабилизации и план действий.">ДА</button>
+                <button data-service="stress" data-modal-title="Стресс" data-modal-message="Поддержим вас: техники стабилизации и план действий.">ДА</button>
             </div>
             <div class="question-box">
                 <p>Вы или ваши близкие столкнулись с местами принудительного содержания?</p>
-                <button data-modal-title="Принудительное содержание" data-modal-message="Разберёмся с юридическими и психологическими аспектами, дадим рекомендации.">ДА</button>
+                <button data-service="detention" data-modal-title="Принудительное содержание" data-modal-message="Разберёмся с юридическими и психологическими аспектами, дадим рекомендации.">ДА</button>
             </div>
             <div class="question-box">
                 <p>Вам нужна помощь или психологическая поддержка из-за стресса в семье?</p>
-                <button data-modal-title="Семья и поддержка" data-modal-message="Доступна семейная консультация и пошаговый план улучшения коммуникации.">ДА</button>
+                <button data-service="family" data-modal-title="Семья и поддержка" data-modal-message="Доступна семейная консультация и пошаговый план улучшения коммуникации.">ДА</button>
             </div>
         </div>
     </section>
@@ -111,13 +111,18 @@
     <!-- Модальное окно для вопросов (универсальное) -->
     <div id="info-modal" class="modal">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h4 id="info-modal-title">Важно</h4>
-            <p id="info-modal-text">Текст модального окна</p>
-            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button id="info-modal-contact">Оставить заявку</button>
-                <a id="info-modal-call" href="tel:8-4832-34-57-71" class="cta-button" style="text-decoration:none; display:inline-block;">Позвонить</a>
-                <button id="info-modal-ok">Закрыть</button>
+            <div class="modal-header">
+                <h4 id="info-modal-title">Важно</h4>
+                <span class="close-button">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="info-modal-text">Текст модального окна</p>
+                <ul id="info-modal-features" class="modal-features"></ul>
+            </div>
+            <div class="modal-actions">
+                <button id="info-modal-contact" class="btn btn-primary">Оставить заявку</button>
+                <a id="info-modal-call" href="tel:8-4832-34-57-71" class="btn btn-ghost">Позвонить</a>
+                <button id="info-modal-ok" class="btn btn-ghost">Закрыть</button>
             </div>
         </div>
     </div>

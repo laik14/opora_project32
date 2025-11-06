@@ -259,22 +259,23 @@ body { padding-top: 72px; }
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* Центрирование по вертикали и горизонтали */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    text-align: center;
-    border-radius: 8px;
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 0;
+    border: 1px solid #000;
+    width: 90%;
+    max-width: 680px;
+    text-align: left;
+    border-radius: 10px;
     position: relative;
+    overflow: hidden;
 }
 
 .close-button {
-    color: #aaa;
+    color: #fff;
     position: absolute;
-    top: 10px; right: 20px;
-    font-size: 28px;
+    top: 10px; right: 16px;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -298,6 +299,67 @@ body { padding-top: 72px; }
     color: red;
     font-size: 0.9em;
     height: 20px;
+}
+
+/* --- Строгая черно-желто-белая тема модалки --- */
+.modal-header {
+    background-color: #000;
+    color: #ffc107;
+    padding: 16px 56px 16px 20px;
+}
+.modal-header h4 { margin: 0; font-size: 1.4em; }
+
+.modal-body { padding: 20px; }
+.modal-body p { margin-top: 0; margin-bottom: 12px; }
+.modal-features {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+.modal-features li {
+    position: relative;
+    padding-left: 28px;
+    margin: 8px 0;
+}
+.modal-features li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px;
+    width: 14px; height: 14px;
+    border: 2px solid #000;
+    background-color: #ffc107;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-top: 1px solid #eee;
+    padding: 14px 14px 18px 14px;
+}
+
+.btn {
+    display: inline-block;
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+}
+.btn-primary {
+    background: #ffc107;
+}
+.btn-ghost {
+    background: #fff;
+}
+
+@media (max-width: 480px) {
+    .modal-content { width: 92%; }
+    .modal-header { padding-right: 46px; }
 }
 
 /* ================= АДАПТИВ ================= */

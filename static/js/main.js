@@ -115,16 +115,64 @@ document.addEventListener('DOMContentLoaded', function() {
         const infoModal = document.getElementById('info-modal');
         const infoTitle = document.getElementById('info-modal-title');
         const infoText = document.getElementById('info-modal-text');
+        const infoFeatures = document.getElementById('info-modal-features');
         const infoClose = infoModal ? infoModal.querySelector('.close-button') : null;
         const infoOk = document.getElementById('info-modal-ok');
         const infoContact = document.getElementById('info-modal-contact');
         const infoCall = document.getElementById('info-modal-call');
         const contactSection = document.getElementById('contact-form');
 
-        const openInfo = (title, text) => {
+        const serviceDetails = {
+            addiction: {
+                title: 'Помощь при зависимостях',
+                text: 'Индивидуальная оценка ситуации и безопасный план выхода из зависимости.',
+                features: [
+                    'Первичная консультация и мотивационное интервью',
+                    'Подбор программы реабилитации и сопровождения',
+                    'Поддержка семьи и работа с созависимостью'
+                ]
+            },
+            stress: {
+                title: 'Работа со стрессом и тревогой',
+                text: 'Поможем стабилизировать состояние и вернуть контроль.',
+                features: [
+                    'Техники саморегуляции и дыхательные практики',
+                    'Когнитивно-поведенческие инструменты',
+                    'Индивидуальный план восстановления'
+                ]
+            },
+            detention: {
+                title: 'Поддержка при принудительном содержании',
+                text: 'Психологические и юридические ориентиры для вас и близких.',
+                features: [
+                    'Анализ ситуации и алгоритмы действий',
+                    'Психоэмоциональная поддержка пострадавших',
+                    'Контакты профильной помощи (по запросу)'
+                ]
+            },
+            family: {
+                title: 'Семейная поддержка',
+                text: 'Улучшим коммуникацию и снизим напряжение в семье.',
+                features: [
+                    'Семейная консультация и разбор конфликтных сценариев',
+                    'Навыки ненасильственного общения',
+                    'План шагов для устойчивых изменений'
+                ]
+            }
+        };
+
+        const openInfo = (title, text, features) => {
             if (!infoModal) return;
             if (infoTitle) infoTitle.textContent = title || 'Важно';
             if (infoText) infoText.textContent = text || '';
+            if (infoFeatures) {
+                infoFeatures.innerHTML = '';
+                (features || []).forEach(f => {
+                    const li = document.createElement('li');
+                    li.textContent = f;
+                    infoFeatures.appendChild(li);
+                });
+            }
             infoModal.style.display = 'block';
         };
         const closeInfo = () => { if (infoModal) infoModal.style.display = 'none'; };
@@ -146,9 +194,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // на кнопках в вопросах читаем атрибуты
         document.querySelectorAll('.questions-section .question-box button').forEach(btn => {
             btn.addEventListener('click', () => {
-                const title = btn.getAttribute('data-modal-title') || 'Важно';
-                const message = btn.getAttribute('data-modal-message') || 'Мы свяжемся с вами и подберём решение.';
-                openInfo(title, message);
+                const service = btn.getAttribute('data-service');
+                const overrideTitle = btn.getAttribute('data-modal-title');
+                const overrideMessage = btn.getAttribute('data-modal-message');
+                const detail = service && serviceDetails[service] ? serviceDetails[service] : null;
+                const title = overrideTitle || (detail ? detail.title : 'Важно');
+                const message = overrideMessage || (detail ? detail.text : 'Мы свяжемся с вами и подберём решение.');
+                const features = detail ? detail.features : [];
+                openInfo(title, message, features);
             });
         });
     })();
