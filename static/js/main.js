@@ -268,33 +268,42 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-    // --- Подстраховка для кнопки звонка: не должна перекрывать футер ---
-    (function keepCallAboveFooter() {
+    // Плавная остановка кнопки звонка над футером
+    (function stopCallButtonAboveFooter() {
         const callBtn = document.querySelector('.call-float');
         const footer = document.querySelector('.footer');
         if (!callBtn || !footer) return;
 
-        function adjust() {
-            // высота кнопки + отступ
-            const btnHeight = callBtn.getBoundingClientRect().height || 64;
-            const margin = 16; // px
+        function adjustButtonPosition() {
             const footerRect = footer.getBoundingClientRect();
-            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-            // если верх футера меньше, чем (высота вьюпорта - btnHeight - margin), кнопка перекрывает футер
-            const overlap = Math.max(0, (btnHeight + margin) - (viewportHeight - footerRect.top));
-            if (overlap > 0) {
-                // поднимаем кнопку выше на величину перекрытия
-                callBtn.style.bottom = `calc(${margin + overlap}px + env(safe-area-inset-bottom, 0px))`;
+            const viewportHeight = window.innerHeight;
+            
+            if (footerRect.top < viewportHeight) {
+                // Футер виден - поднимаем кнопку
+                const distanceFromBottom = viewportHeight - footerRect.top;
+                callBtn.style.transform = `translateY(-${distanceFromBottom + 16}px)`; // 16px отступ
             } else {
-                // стандартный отступ
-                callBtn.style.bottom = `calc(${margin}px + env(safe-area-inset-bottom, 0px))`;
+                // Футер не виден - возвращаем кнопку в исходное положение
+                callBtn.style.transform = 'translateY(0)';
             }
         }
 
-        // корректируем при прокрутке/изменении размера и при загрузке
-        window.addEventListener('scroll', () => requestAnimationFrame(adjust), { passive: true });
-        window.addEventListener('resize', () => requestAnimationFrame(adjust));
-        // начальная корректировка
-        requestAnimationFrame(adjust);
+        // Используем requestAnimationFrame для плавной анимации
+        let ticking = false;
+        document.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    adjustButtonPosition();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Начальная позиция
+        adjustButtonPosition();
+
+        // Обновляем позицию при изменении размера окна
+        window.addEventListener('resize', adjustButtonPosition, { passive: true });
     })();
 });

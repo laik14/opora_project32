@@ -458,7 +458,7 @@ body { padding-top: 72px; }
     align-items: center;
     justify-content: center;
     box-shadow: none;
-    transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s cubic-bezier(.2,.9,.2,1);
+    transition: all .2s cubic-bezier(.2,.9,.2,1); /* добавляем transition для position и bottom */
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
     border: 1px solid #000; /* чёрная рамка (тоньше) */
