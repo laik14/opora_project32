@@ -399,3 +399,79 @@ body { padding-top: 72px; }
     .webinars-grid { grid-template-columns: 1fr; gap: 14px; }
     .about-image img { max-width: 100%; }
 }
+
+/* ================= ПЛАВАЮЩИЕ КНОПКИ МЕССЕНДЖЕРОВ (ТОЛЬКО ДЛЯ МОБИЛЬНЫХ) ================= */
+.messenger-float {
+    display: none; /* по умолчанию скрыты на десктопах */
+    position: fixed;
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1100; /* над шапкой, под модальными окнами, при необходимости увеличьте */
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+.mf-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px; /* слегка скруглённые углы */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 20px;
+    box-shadow: none;
+    transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s cubic-bezier(.2,.9,.2,1), opacity .12s ease;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+    border: 1px solid #000; /* тонкая чёрная рамка */
+    padding: 0; /* чтобы цвет фона был виден в теле кнопки */
+}
+.mf-whatsapp { background: #25D366; }
+.mf-telegram { background: #0088cc; }
+.mf-viber { background: #665cac; }
+.mf-btn:active, .mf-btn:focus { transform: translateY(0) scale(.995); outline: none; }
+.mf-btn:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+}
+
+/* Показываем только на мобильных экранах (<=480px) */
+@media (max-width: 480px) {
+    .messenger-float { display: flex; }
+}
+
+/* Кнопка звонка — фиксирована в правом нижнем углу */
+.call-float {
+    display: none; /* покажем на мобильных */
+    position: fixed;
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 1100;
+    width: 52px;
+    height: 52px;
+    border-radius: 6px; /* квадрат с чуть скруглёнными углами */
+    background: #25D366; /* зелёный как у WhatsApp */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    transition: transform .16s cubic-bezier(.2,.9,.2,1), box-shadow .16s cubic-bezier(.2,.9,.2,1);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    border: 1px solid #000; /* чёрная рамка (тоньше) */
+    box-sizing: border-box;
+}
+.call-float svg { display: block; }
+.call-float:active, .call-float:focus { transform: scale(.98); }
+.call-float:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.14);
+}
+
+@media (max-width: 480px) {
+    .call-float { display: inline-flex; }
+}
+
