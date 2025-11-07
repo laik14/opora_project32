@@ -21,7 +21,10 @@
 
     <!-- ================= Вступительная секция ================= -->
     <section class="section main-section" data-theme="yellow">
-        <h2>Это помощь людям, попавшим в трудную жизненную ситуацию.</h2>
+        <div class="hero-top">
+            <img class="hero-logo" src="/static/img/Vector.svg" alt="ОПОРА логотип">
+            <h2>Это помощь людям, попавшим в трудную жизненную ситуацию.</h2>
+        </div>
         <p>Один звонок может изменить вашу жизнь и жизнь ваших близких.</p>
     </section>
 
@@ -102,7 +105,7 @@
 
     <!-- ================= Подвал сайта (Footer) ================= -->
     <footer class="footer black">
-        <div class="logo" style="color: #ffc107;">ОПОРА</div>
+        <div class="logo" style="color: #ffc107;">ОПОРА <img class="footer-logo" src="/static/img/Vector.svg" alt="ОПОРА логотип"></div>
         <div class="phone-cta">
             <div class="phone-number" style="color: #ffc107;">8-4832-34-57-71</div>
             <div class="home-icon">🏠</div>
@@ -161,6 +164,8 @@
         </a>
     </div>
 
+    <!-- Логотип рядом с кнопкой звонка (маленький квадрат) -->
+    <img class="call-logo" src="/static/img/Vector.svg" alt="ОПОРА логотип">
     <!-- Кнопка звонка: фиксирована в правом нижнем углу; JS гарантирует, что она не перекрывает футер -->
     <a class="call-float" href="tel:+74832345771" aria-label="Позвонить">
         <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
